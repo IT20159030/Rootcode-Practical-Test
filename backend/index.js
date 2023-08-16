@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import connectDB from './config/dbConnection.js';
+import router from './routes/expenseRoute.js';
 
 connectDB(); // Connect to the database
 
@@ -12,6 +13,9 @@ app.use(cors());
 app.use(bodyParser.json());
 
 dotenv.config();
+
+app.use('/api/expenses', router);
+
 
 const PORT = process.env.PORT || 5000;
 
