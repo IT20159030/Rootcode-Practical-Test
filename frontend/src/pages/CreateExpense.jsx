@@ -11,12 +11,10 @@ const Expense = () => {
     description: '',
     category: '',
     amount: '',
-    date: '', // Corrected spelling of "category"
+    date: '', 
   });
 
   const { title, description, category, amount, date } = expense;
-
-  const onChange = (e) => setExpense({ ...expense, [e.target.name]: e.target.value });
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -29,7 +27,7 @@ const Expense = () => {
       date: '',
     });
 
-    window.location = '/';
+    // window.location = '/';
 
   };
 
@@ -41,6 +39,10 @@ const Expense = () => {
       amount: '',
       date: '',
     });
+  };
+
+  const onChange = (e) => {
+    setExpense({ ...expense, [e.target.id]: e.target.value });
   };
 
   return (

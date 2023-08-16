@@ -1,13 +1,13 @@
 import express from 'express';
 import { 
-    createExpense, 
-    getAllExpenses, 
-    getExpenseById, 
-    updateExpense, 
-    deleteExpense, 
-    getExpenseByCategory, 
-    getExpenseByDateRange, 
-    getExpenseByAmountRange 
+    createExpense,
+    getAllExpenses,
+    getExpenseById,
+    updateExpense,
+    deleteExpense,
+    getExpensesByCategory,
+    getExpensesByDateRange,
+    getExpensesByAmountRange
  } from '../controllers/expenseController.js';
 
 const router = express.Router();
@@ -17,8 +17,8 @@ router.get('/', getAllExpenses);
 router.get('/:id', getExpenseById);
 router.put('/:id', updateExpense);
 router.delete('/:id', deleteExpense);
-router.get('/category/:category', getExpenseByCategory);
-router.get('/date/:startDate/:endDate', getExpenseByDateRange);
-router.get('/amount/:startAmount/:endAmount', getExpenseByAmountRange);
+router.get('/category/:category', getExpensesByCategory);
+router.get('/date/:startDate/:endDate', getExpensesByDateRange);
+router.get('/amount/:startAmount/:endAmount', getExpensesByAmountRange);
 
 export default router;

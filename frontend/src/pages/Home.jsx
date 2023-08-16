@@ -1,5 +1,5 @@
 import React from 'react'
-import { BiMoney, BiSolidAddToQueue, BiSolidReport, BiMoon, BiSun } from 'react-icons/bi'
+import { BiMoney, BiSolidAddToQueue, BiSolidReport } from 'react-icons/bi'
 import HomeCard from '../components/HomeCard'
 import { Link } from 'react-router-dom'
 import { useGlobalContext } from '../context/ContextProvider'
@@ -7,20 +7,20 @@ import { useGlobalContext } from '../context/ContextProvider'
 
 const Home = () => {
 
-  const { mode, toggleMode } = useGlobalContext()
+  const { mode } = useGlobalContext();
 
   const homeCards = [
-    {
-      icon: <BiMoney className='className="h-6 w-6 text-white' />,
-      title: 'Expenses',
-      description: 'View all your expenses',
-      link: '/expenses'
-    },
     {
       icon: <BiSolidAddToQueue className='className="h-6 w-6 text-white' />,
       title: 'Add Expense',
       description: 'Add a new expense',
       link: '/add-expense'
+    },
+    {
+      icon: <BiMoney className='className="h-6 w-6 text-white' />,
+      title: 'Expenses',
+      description: 'View all your expenses',
+      link: '/expenses'
     },
     {
       icon: <BiSolidReport className='className="h-6 w-6 text-white' />,
@@ -50,12 +50,7 @@ const Home = () => {
           </div>
         </div>
         </div>
-        {/* top right theme toggle */}
-        <div className="absolute top-0 right-0 p-2">
-          <button onClick={toggleMode} className="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none">
-            {mode === 'light' ? <BiMoon className="h-5 w-5" /> : <BiSun className="h-5 w-5" />}
-          </button>
-        </div>
+        
       </div>
     </div>
   )

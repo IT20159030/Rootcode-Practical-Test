@@ -1,16 +1,19 @@
 import mongoose from 'mongoose';
 
 const connectDB = async () => {
+  const uri = "mongodb+srv://rootcodeAdmin:rootcodeAdmin@cluster0.fg1nqjo.mongodb.net/rootcode"
   try {
-    const uri = process.env.MONGODB_URI;
-    await mongoose.connect(uri, {
+    const conn = await mongoose.connect(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
 
-    console.log('Connected to the database');
+    console.log(
+      `MongoDB database connection established successfully: ${conn.connection.host}`
+    );
   } catch (error) {
-    console.error('Error connecting to the database:', error);
+    console.log(`Error: ${error.message}`);
+    process.exit(1);
   }
 };
 

@@ -1,21 +1,18 @@
+import Expense from '../models/expenseModel.js';
+
 // create expense
 const createExpense = async (req, res) => {
     try {
-        const { name, amount, date } = req.body;
-        const expense = new _expenseModel.default({
-        name,
-        amount,
-        date
-        });
+        const expense = new Expense(req.body);
         await expense.save();
         res.status(201).json({
-        message: 'Expense created successfully',
-        data: expense
+            success: true,
+            data: expense
         });
     } catch (error) {
-        res.status(500).json({
-        message: 'Something went wrong',
-        error: error.message
+        res.status(400).json({
+            success: false,
+            message: error.message
         });
     }
 };
@@ -23,15 +20,15 @@ const createExpense = async (req, res) => {
 // get all expenses
 const getAllExpenses = async (req, res) => {
     try {
-        const expenses = await _expenseModel.default.find();
+        const expenses = await Expense.find();
         res.status(200).json({
-        message: 'All expenses fetched successfully',
-        data: expenses
+            success: true,
+            data: expenses
         });
     } catch (error) {
-        res.status(500).json({
-        message: 'Something went wrong',
-        error: error.message
+        res.status(400).json({
+            success: false,
+            message: error.message
         });
     }
 };
@@ -39,16 +36,15 @@ const getAllExpenses = async (req, res) => {
 // get expense by id
 const getExpenseById = async (req, res) => {
     try {
-        const { id } = req.params;
-        const expense = await _expenseModel.default.findById(id);
+        const expense = await Expense.findById(req.params.id);
         res.status(200).json({
-        message: 'Expense fetched successfully',
-        data: expense
+            success: true,
+            data: expense
         });
     } catch (error) {
-        res.status(500).json({
-        message: 'Something went wrong',
-        error: error.message
+        res.status(400).json({
+            success: false,
+            message: error.message
         });
     }
 };
@@ -56,22 +52,41 @@ const getExpenseById = async (req, res) => {
 // update expense
 const updateExpense = async (req, res) => {
     try {
-        const { id } = req.params;
-        const { name, amount, date } = req.body;
-        const expense = await _expenseModel.default.findByIdAndUpdate(id, {
-        name,
-        amount,
-        date
-        });
+        const {id} = req.params;
+        const {
+            title,
+            description,
+            category,
+            amount,
+            date
+        } = req.body;
+
+        const expense = await Expense.findById(id);
+
+        // Check if the expense exists
+        if (!expense) {
+            return res.status(404).json({
+                success: false,
+                message: 'Expense not found'
+            });
+        }
+
+        expense.title = title || expense.title;
+        expense.description = description || expense.description;
+        expense.category = category || expense.category;
+        expense.amount = amount || expense.amount;
+        expense.date = date || expense.date;
+
         await expense.save();
+
         res.status(200).json({
-        message: 'Expense updated successfully',
-        data: expense
+            success: true,
+            data: expense
         });
     } catch (error) {
-        res.status(500).json({
-        message: 'Something went wrong',
-        error: error.message
+        res.status(400).json({
+            success: false,
+            message: error.message
         });
     }
 };
@@ -79,77 +94,93 @@ const updateExpense = async (req, res) => {
 // delete expense
 const deleteExpense = async (req, res) => {
     try {
-        const { id } = req.params;
-        await _expenseModel.default.findByIdAndDelete(id);
+        const {id} = req.params;
+        const expense = await Expense.findById(id);
+
+        // Check if the expense exists
+        if (!expense) {
+            return res.status(404).json({
+                success: false,
+                message: 'Expense not found'
+            });
+        }
+
+        await expense.remove();
+
         res.status(200).json({
-        message: 'Expense deleted successfully'
+            success: true,
+            message: 'Expense deleted successfully'
         });
     } catch (error) {
-        res.status(500).json({
-        message: 'Something went wrong',
-        error: error.message
+        res.status(400).json({
+            success: false,
+            message: error.message
         });
     }
 };
 
-// get expense by category
-const getExpenseByCategory = async (req, res) => {
+// get expenses by category
+const getExpensesByCategory = async (req, res) => {
     try {
-        const { category } = req.params;
-        const expense = await _expenseModel.default.find({ category });
+        const {category} = req.params;
+        const expenses = await Expense.find({category});
+
         res.status(200).json({
-        message: 'Expense fetched successfully',
-        data: expense
+            success: true,
+            data: expenses
         });
     } catch (error) {
-        res.status(500).json({
-        message: 'Something went wrong',
-        error: error.message
+        res.status(400).json({
+            success: false,
+            message: error.message
         });
     }
-};
+}
 
-// get expense by date range
-const getExpenseByDateRange = async (req, res) => {
+// get expenses by date range
+const getExpensesByDateRange = async (req, res) => {
     try {
-        const { startDate, endDate } = req.params;
-        const expense = await _expenseModel.default.find({ date: { $gte: startDate, $lte: endDate } });
+        const {startDate, endDate} = req.params;
+        const expenses = await Expense.find({date: {$gte: startDate, $lte: endDate}});
+
         res.status(200).json({
-        message: 'Expense fetched successfully',
-        data: expense
+            success: true,
+            data: expenses
         });
     } catch (error) {
-        res.status(500).json({
-        message: 'Something went wrong',
-        error: error.message
+        res.status(400).json({
+            success: false,
+            message: error.message
         });
     }
-};
+}
 
-// get expense by amount range
-const getExpenseByAmountRange = async (req, res) => {
+// get expenses by amount range
+const getExpensesByAmountRange = async (req, res) => {
     try {
-        const { startAmount, endAmount } = req.params;
-        const expense = await _expenseModel.default.find({ amount: { $gte: startAmount, $lte: endAmount } });
+        const {minAmount, maxAmount} = req.params;
+        const expenses = await Expense.find({amount: {$gte: minAmount, $lte: maxAmount}});
+
         res.status(200).json({
-        message: 'Expense fetched successfully',
-        data: expense
+            success: true,
+            data: expenses
         });
     } catch (error) {
-        res.status(500).json({
-        message: 'Something went wrong',
-        error: error.message
+        res.status(400).json({
+            success: false,
+            message: error.message
         });
     }
 };
 
-export default { 
-    createExpense, 
-    getAllExpenses, 
-    getExpenseById, 
-    updateExpense, 
-    deleteExpense, 
-    getExpenseByCategory, 
-    getExpenseByDateRange, 
-    getExpenseByAmountRange 
+export {
+    createExpense,
+    getAllExpenses,
+    getExpenseById,
+    updateExpense,
+    deleteExpense,
+    getExpensesByCategory,
+    getExpensesByDateRange,
+    getExpensesByAmountRange
 };
+    

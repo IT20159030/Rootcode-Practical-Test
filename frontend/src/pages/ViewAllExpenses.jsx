@@ -27,7 +27,7 @@ const ViewAllExpenses = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
       <h1 className="text-2xl font-semibold mb-4 text-center">View All Expenses</h1>
-      <table className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md w-full max-w-lg">
+      <table className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md w-10/12">
         <thead>
           <tr>
             <th>Title</th>
@@ -39,7 +39,8 @@ const ViewAllExpenses = () => {
           </tr>
         </thead>
         <tbody>
-          {expenses.map((expense) => (
+          {/* if there are expenses */}
+          {expenses.length > 0 && expenses.map((expense) => (
             <tr key={expense.id}>
               <td>{expense.title}</td>
               <td>{expense.description}</td>
@@ -47,12 +48,12 @@ const ViewAllExpenses = () => {
               <td>{expense.amount}</td>
               <td>{expense.date}</td>
               <td>
-                <Link to={`/update/${expense.id}`}>
+                <Link to={`/expenses/update/${expense._id}`} className="mr-2">
                   <span className="text-blue-500 cursor-pointer mr-2">Update</span>
                 </Link>
                 <span
                   className="text-red-500 cursor-pointer"
-                  onClick={() => handleDelete(expense.id)}
+                  onClick={() => handleDelete(expense._id)}
                 >
                   Delete
                 </span>

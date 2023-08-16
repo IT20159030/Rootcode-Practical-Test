@@ -12,7 +12,7 @@ const apiClient = axios.create({
 export const getExpenses = async () => {
     try {
         const { data } = await apiClient.get('/');
-        return data;
+        return data.data;
     } catch (error) {
         console.log(error);
     }
@@ -22,7 +22,7 @@ export const getExpenses = async () => {
 export const getExpense = async (id) => {
     try {
         const { data } = await apiClient.get(`/${id}`);
-        return data;
+        return data.data;
     } catch (error) {
         console.log(error);
     }
@@ -52,7 +52,7 @@ export const updateExpense = async (id, expense) => {
 export const deleteExpense = async (id) => {
     try {
         const { data } = await apiClient.delete(`/${id}`);
-        return data;
+        return data
     } catch (error) {
         console.log(error);
     }

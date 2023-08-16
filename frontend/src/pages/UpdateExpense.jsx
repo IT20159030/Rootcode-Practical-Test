@@ -5,7 +5,6 @@ import { getExpense, updateExpense } from '../api/expensesAPI';
 
 const UpdateExpense = () => {
   const { id } = useParams();
-  const history = useHistory();
   const { mode } = useGlobalContext();
 
   const [expense, setExpense] = useState({
@@ -20,21 +19,24 @@ const UpdateExpense = () => {
     const fetchExpense = async () => {
       const fetchedExpense = await getExpense(id);
       setExpense(fetchedExpense);
+      console.log('fetchedExpense', fetchedExpense)
     };
     fetchExpense();
   }, [id]);
 
   const { title, description, category, amount, date } = expense;
 
-  const onChange = (e) => setExpense({ ...expense, [e.target.name]: e.target.value });
+  const onChange = (e) => {
+    setExpense({ ...expense, [e.target.id]: e.target.value });
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await updateExpense(id, expense);;
+    await updateExpense(id, expense);
   };
 
   const handleCancel = () => {
-    
+    window.location = '/expenses';
   };
 
   return (
@@ -117,7 +119,7 @@ const UpdateExpense = () => {
             type="date"
             id="date"
             className="mt-1 p-2 w-full border rounded-md dark:bg-gray-600"
-            value={date}
+            value={date.substring(0, 10)}
             required
             onChange={(e) => onChange(e)}
           />
