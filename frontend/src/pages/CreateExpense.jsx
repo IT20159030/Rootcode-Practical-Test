@@ -27,6 +27,9 @@ const Expense = () => {
       date: '',
     });
 
+    alert('Expense added successfully');
+
+
     // window.location = '/';
 
   };
@@ -46,7 +49,7 @@ const Expense = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
+    <div className={`bg-${mode === 'light' ? 'white' : 'gray-800'} text-${mode === 'light' ? 'gray-800' : 'white'} flex flex-col items-center justify-center min-h-screen`}>
       <h1 className="text-2xl font-semibold mb-4 text-center">Create Expense</h1>
       <form className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md w-full max-w-md">
         <div className="mb-4">

@@ -37,7 +37,7 @@ const NavBar = () => {
                 <Link
                     key={index}
                     to={link.link}
-                    className="text-gray-500 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                     aria-current="page"
                 >
                     {link.title}

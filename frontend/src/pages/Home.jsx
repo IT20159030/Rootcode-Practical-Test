@@ -20,7 +20,7 @@ const Home = () => {
       icon: <BiMoney className='className="h-6 w-6 text-white' />,
       title: 'Expenses',
       description: 'View all your expenses',
-      link: '/expenses'
+      link: '/all-expenses'
     },
     {
       icon: <BiSolidReport className='className="h-6 w-6 text-white' />,
